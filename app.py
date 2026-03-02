@@ -89,7 +89,7 @@ st.markdown("""
         background: linear-gradient(180deg, #f0f4f8 0%, #e8eef5 100%);
     }
     .chart-desc { font-size: 0.8rem; color: #6b7b8d; font-style: italic; margin-top: 0.3rem; margin-bottom: 0.5rem; line-height: 1.4; }
-    #MainMenu {visibility: hidden;} footer {visibility: hidden;} header {visibility: hidden;}
+    #MainMenu {visibility: hidden;} footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
