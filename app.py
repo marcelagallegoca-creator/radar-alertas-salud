@@ -267,7 +267,7 @@ with st.expander("🔍 **Filtros de búsqueda** (clic para abrir)", expanded=Fal
     mod_sel = st.selectbox("📋 Modalidad", mods, index=0)
     niveles = ["Todos", "Alto", "Medio", "Bajo"]
     nivel_sel = st.selectbox("⚠️ Nivel de Riesgo", niveles, index=0)
-        st.markdown("<div style='text-align:center;color:#888;font-size:0.75rem;'>Prototipo MVP v2.0<br>Datos simulados para testeo<br>3% contratos priorizados por score</div>", unsafe_allow_html=True)
+        
 
 # ─────────────────────────────────────────────
 # FILTROS
