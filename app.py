@@ -15,7 +15,7 @@ import random
 # CONFIGURACIÓN
 # ─────────────────────────────────────────────
 st.set_page_config(
-    page_title="Radar de Alertas – Contratación en Salud",
+    page_title="Radar de Alertas tempranas – Contratación en Salud",
     page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -88,6 +88,7 @@ st.markdown("""
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #f0f4f8 0%, #e8eef5 100%);
     }
+    .chart-desc { font-size: 0.8rem; color: #6b7b8d; font-style: italic; margin-top: 0.3rem; margin-bottom: 0.5rem; line-height: 1.4; }
     #MainMenu {visibility: hidden;} footer {visibility: hidden;} header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
@@ -257,9 +258,7 @@ df = generar_datos(n=600)
 # ─────────────────────────────────────────────
 # SIDEBAR
 # ─────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("### 🔍 Filtros de búsqueda")
-    st.markdown("---")
+with st.expander("🔍 **Filtros de búsqueda** (clic para abrir)", expanded=False):
     anios = sorted(df["anio"].unique())
     periodo = st.select_slider("📅 Período", options=anios, value=(min(anios), max(anios)))
     depts = ["Todos"] + sorted(df["departamento"].unique().tolist())
@@ -268,8 +267,7 @@ with st.sidebar:
     mod_sel = st.selectbox("📋 Modalidad", mods, index=0)
     niveles = ["Todos", "Alto", "Medio", "Bajo"]
     nivel_sel = st.selectbox("⚠️ Nivel de Riesgo", niveles, index=0)
-    st.markdown("---")
-    st.markdown("<div style='text-align:center;color:#888;font-size:0.75rem;'>Prototipo MVP v2.0<br>Datos simulados para testeo<br>3% contratos priorizados por score</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align:center;color:#888;font-size:0.75rem;'>Prototipo MVP v2.0<br>Datos simulados para testeo<br>3% contratos priorizados por score</div>", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
 # FILTROS
@@ -287,7 +285,7 @@ if nivel_sel != "Todos":
 # ─────────────────────────────────────────────
 st.markdown(
     '<div class="main-header">'
-    '<h1>🏥 RADAR DE ALERTAS – CONTRATACIÓN EN SALUD (SECOP)</h1>'
+    '<h1>🏥 RADAR DE ALERTAS TEMPRANAS – CONTRATACIÓN EN SALUD (SECOP)</h1>'
     '<p>Sistema de alertas tempranas para contratación pública · Vista Auditor</p>'
     '</div>',
     unsafe_allow_html=True)
@@ -311,7 +309,7 @@ with c3:
 with c4:
     st.markdown(f'<div class="kpi-card info"><div class="kpi-label">Contratación Directa</div><div class="kpi-value info">{pct_directa:.1f}%</div><div class="kpi-delta">Del total analizado</div></div>', unsafe_allow_html=True)
 with c5:
-    st.markdown(f'<div class="kpi-card success"><div class="kpi-label">Ahorro Pot. Auditoría</div><div class="kpi-value success">{fmt_moneda(ahorro)}</div><div class="kpi-delta">Est. 12% sobre riesgo alto</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="kpi-card success"><div class="kpi-label">Potencial Ahorro Auditoría.</div><div class="kpi-value success">{fmt_moneda(ahorro)}</div><div class="kpi-delta">Est. 12% sobre riesgo alto</div></div>', unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -350,7 +348,8 @@ with col_mapa:
     st.plotly_chart(fig_mapa, use_container_width=True)
 
 with col_temp:
-    st.markdown('<div class="section-title">Alertas por Mes · Contexto Temporal</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Alertas por Mes </div>', unsafe_allow_html=True)
+ st.markdown('<div class="chart-desc">Evolución mensual. Zonas sombreadas: amarillo = cierre fiscal, rojo = pre-electoral.</div>', unsafe_allow_html=True)
 
     am = df_f[df_f["score_riesgo"] >= 40].groupby(["anio","mes_num","mes"]).size().reset_index(name="alertas").sort_values(["anio","mes_num"])
     am["periodo"] = am["mes"] + " " + am["anio"].astype(str)
@@ -388,11 +387,11 @@ with col_temp:
     fig_t.add_trace(go.Scatter(x=hm["periodo"], y=hm["alto"], mode="lines+markers", name="Riesgo Alto", line=dict(color="#e74c3c", width=2, dash="dot"), marker=dict(size=6, symbol="diamond")))
 
     fig_t.update_layout(
-        height=420, margin=dict(l=20,r=20,t=30,b=60),
+        height=420, margin=dict(l=20,r=20,t=10,b=60),
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         xaxis=dict(showgrid=False, tickangle=-45, tickfont=dict(size=10)),
         yaxis=dict(showgrid=True, gridcolor="#eef2f7", title=dict(text="Cantidad", font=dict(size=11))),
-        legend=dict(orientation="h", y=1.02, xanchor="right", x=1, font=dict(size=11)),
+        legend=dict(orientation="h", y=-0.3, xanchor="right", x=1, font=dict(size=11)),
         hovermode="x unified",
     )
     st.plotly_chart(fig_t, use_container_width=True)
@@ -415,7 +414,7 @@ st.dataframe(df_disp, use_container_width=True, height=300, hide_index=True)
 # FILA 4: PANEL DE EXPLICACIÓN
 # ─────────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown('<div class="section-title">¿Por qué este contrato es riesgoso?</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">¿Por qué este contrato tiene riego?</div>', unsafe_allow_html=True)
 
 ids = df_top["id_contrato"].tolist()
 sel = st.selectbox("Selecciona un contrato para ver el detalle:", ids, index=0)
@@ -506,6 +505,7 @@ if sel:
     # ── COMPARACIÓN ENTRE PARES ──
     with col_pares:
         st.markdown('<div class="section-title">Comparación con Pares</div>', unsafe_allow_html=True)
+        st.markdown('<div class="chart-desc">Compara el valor de este contrato con otros del mismo tipo de entidad y modalidad.</div>', unsafe_allow_html=True)
 
         pares = df[(df["tipo_entidad"] == c["tipo_entidad"]) & (df["modalidad"] == c["modalidad"])]
         if len(pares) > 5:
@@ -549,6 +549,7 @@ if sel:
     # ── TRAZABILIDAD DEL PROVEEDOR ──
     with col_traz:
         st.markdown('<div class="section-title">Trazabilidad del Proveedor</div>', unsafe_allow_html=True)
+        st.markdown('<div class="chart-desc">Actividad del proveedor: en cuántas entidades opera, contratos simultáneos y valor acumulado.</div>', unsafe_allow_html=True)
 
         prov = c["proveedor_id"]
         contratos_prov = df[df["proveedor_id"] == prov]
@@ -605,6 +606,7 @@ if sel:
     # ── ÍNDICE DE CALIDAD DE DATOS ──
     with col_calidad:
         st.markdown('<div class="section-title">Calidad de Datos · Entidad</div>', unsafe_allow_html=True)
+        st.markdown('<div class="chart-desc">Mide qué tan completa, consistente y oportuna es la información que esta entidad publica en SECOP II.</div>', unsafe_allow_html=True)
 
         entidad_c = df[df["entidad"] == c["entidad"]]
         cal_comp = entidad_c["calidad_completitud"].mean()
