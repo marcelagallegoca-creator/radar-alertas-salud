@@ -258,7 +258,7 @@ df = generar_datos(n=600)
 # ─────────────────────────────────────────────
 # SIDEBAR
 # ─────────────────────────────────────────────
-with st.expander("🔍 Filtros de búsqueda", expanded=False):
+st.markdown('<div class="section-title">Filtros de búsqueda</div>', unsafe_allow_html=True)
     anios = sorted(df["anio"].unique())
     periodo = st.select_slider("📅 Período", options=anios, value=(min(anios), max(anios)))
     depts = ["Todos"] + sorted(df["departamento"].unique().tolist())
