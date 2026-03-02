@@ -349,7 +349,7 @@ with col_mapa:
 
 with col_temp:
     st.markdown('<div class="section-title">Alertas por Mes </div>', unsafe_allow_html=True)
- st.markdown('<div class="chart-desc">Evolución mensual. Zonas sombreadas: amarillo = cierre fiscal, rojo = pre-electoral.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="chart-desc">Evolución mensual. Zonas sombreadas: amarillo = cierre fiscal, rojo = pre-electoral.</div>', unsafe_allow_html=True)
 
     am = df_f[df_f["score_riesgo"] >= 40].groupby(["anio","mes_num","mes"]).size().reset_index(name="alertas").sort_values(["anio","mes_num"])
     am["periodo"] = am["mes"] + " " + am["anio"].astype(str)
