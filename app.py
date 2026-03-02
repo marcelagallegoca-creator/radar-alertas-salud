@@ -258,7 +258,7 @@ df = generar_datos(n=600)
 # ─────────────────────────────────────────────
 # SIDEBAR
 # ─────────────────────────────────────────────
-with st.expander("🔍 **Filtros de búsqueda** (clic para abrir)", expanded=False):
+with st.expander("🔍 Filtros de búsqueda", expanded=False):
     anios = sorted(df["anio"].unique())
     periodo = st.select_slider("📅 Período", options=anios, value=(min(anios), max(anios)))
     depts = ["Todos"] + sorted(df["departamento"].unique().tolist())
@@ -414,7 +414,7 @@ st.dataframe(df_disp, use_container_width=True, height=300, hide_index=True)
 # FILA 4: PANEL DE EXPLICACIÓN
 # ─────────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown('<div class="section-title">¿Por qué este contrato tiene riego?</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">¿Por qué este contrato tiene riesgo?</div>', unsafe_allow_html=True)
 
 ids = df_top["id_contrato"].tolist()
 sel = st.selectbox("Selecciona un contrato para ver el detalle:", ids, index=0)
